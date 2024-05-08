@@ -29,7 +29,7 @@ async function getPostgresVersion() {
 }
 
 getPostgresVersion();
-
+//Post the User Display Name on NavBody
 app.post("/signup", async (req, res) => {
   const client = await pool.connect();
   try {
@@ -125,29 +125,7 @@ WHERE user_uid = $1;
 /*************************************************************************************************/
 
 
-app.post("/addmovies", async (req, res) => {
-  const { user_Review, date_Watched, user_uid } = req.body;
 
-  console.log("Received movie details:", {
-    user_Review,
-    date_Watched,
-    user_uid,
-  });
-
-  const client = await pool.connect();
-  try {
-    const post = await client.query(
-      "INSERT INTO movies (personal_review, date_watched, user_uid) VALUES ($1, $2, $3) RETURNING *",
-      [user_Review, date_Watched, user_uid],
-    );
-    res.json(post.rows[0]);
-  } catch (error) {
-    console.error("Error:", error.message);
-    res.status(500).json({ error: error.message });
-  } finally {
-    client.release();
-  }
-});
 
 app.get("/moviedetails/user/:user_uid", async (req, res) => {
   const { user_uid } = req.params;
